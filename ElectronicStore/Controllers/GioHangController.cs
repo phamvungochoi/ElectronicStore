@@ -147,16 +147,11 @@ namespace ElectronicStore.Controllers
                 cthd.SoLuong = item.iSoLuong;
                 cthd.DonGia = (decimal)item.dDonGia;
                 ten += item.sTenSP + "  ";
-                data.CTHDs.InsertOnSubmit(cthd);
+                gia += (int)(cthd.DonGia*item.iSoLuong);
+                data.CTHDs.InsertOnSubmit(cthd);             
             }
             data.SubmitChanges();
-            foreach (CTHD ct in data.CTHDs.Where(n => n.MaSP == ddh.MADH).ToList())
-            {
-                gia += (int)(ct.DonGia * ct.SoLuong);
-                sl += (int)ct.SoLuong;
-            }
             string url = "https://www.baokim.vn/payment/product/version11?business=phamvungochoi@gmail.com&id=&order_description=ABC" + "&product_name=" + ten + "&product_price=" + gia + "&product_quantity=" + sl + "&total_amount=" + gia + "&url_cancel=&url_detail=" + "&url_success=" + Url.Action("XacNhanDonHang", "GioHang");
-            data.SubmitChanges();
             Session["GioHang"] = null;
             return Redirect(url);           
         }
