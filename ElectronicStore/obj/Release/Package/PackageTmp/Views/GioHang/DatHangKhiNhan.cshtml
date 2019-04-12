@@ -1,6 +1,6 @@
 ﻿@using ElectronicStore.Models
 @{
-    ViewBag.Title = "DatHang";
+    ViewBag.Title = "DatHangKhiNhan";
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
 @model List<GioHang>
@@ -74,12 +74,24 @@
         <tr style="height:40px">
             <td></td>
             <td>
-                <input type="Submit" value="Thanh toán trực tuyến" class="btn btn-danger" />
-            </td>
-            <td style="padding-left:10px">
-                <a href="@Url.Action("DatHangKhiNhan","GioHang")" class="btn btn-success">Thanh toán tiền mặt</a>
+                @*<div class="payment-method">
+                        <div class="input-radio">
+                            <input type="radio" name="idNut1" id="payment-1" value="true">
+                            <label for="payment-1">
+                                <span></span>
+                                Thanh Toán Trực Tuyến
+                            </label>
+                        </div>
+                        <div class="input-radio">
+                            <input type="radio" name="idNut2" id="payment-2" value="false">
+                            <label for="payment-2">
+                                <span></span>
+                                Thanh Toán Khi Nhận Hàng
+                            </label>
+                        </div>
+                    </div>*@
+                <input type="Submit" value="Thanh Toán Tiền Mặt" class="btn btn-success" />
             </td>
         </tr>
     }
-    
 </table>

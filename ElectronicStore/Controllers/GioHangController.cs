@@ -156,9 +156,9 @@ namespace ElectronicStore.Controllers
                 sl += (int)ct.SoLuong;
             }
             string url = "https://www.baokim.vn/payment/product/version11?business=phamvungochoi@gmail.com&id=&order_description=ABC" + "&product_name=" + ten + "&product_price=" + gia + "&product_quantity=" + sl + "&total_amount=" + gia + "&url_cancel=&url_detail=" + "&url_success=" + Url.Action("XacNhanDonHang", "GioHang");
-                data.SubmitChanges();
-                Session["GioHang"] = null;
-                return Redirect(url);           
+            data.SubmitChanges();
+            Session["GioHang"] = null;
+            return Redirect(url);           
         }
         public ActionResult DatHangKhiNhan()
         {
