@@ -15,7 +15,7 @@ namespace ElectronicStore.Areas.Administrator.Controllers.CustomAttributes
             HttpCookie account = filterContext.HttpContext.Request.Cookies["AdminAccount"];
             if (account == null)
             {
-                message = "Đăng nhập để tiếp tục.";
+                message = "Đăng nhập để tiếp tục!";
                 isFailed = true;
             }
             else
@@ -26,12 +26,12 @@ namespace ElectronicStore.Areas.Administrator.Controllers.CustomAttributes
                     var model = dataContext.NhanViens.Single(a => a.MaNV == id);
                     if (model.MaCV == null)
                     {
-                        message = "Tài khoản đã bị khóa";
+                        message = "Tài khoản của bạn đã bị khóa";
                         isFailed = true;
                     }
                     else if (model.Password != account["Password"])
                     {
-                        message = "Mật khẩu đã bị thay đổi, vui lòng đăng nhập lại";
+                        message = "Mật khẩu của bạn đã thay đổi, vui lòng đăng nhập lại!";
                         isFailed = true;
                     }
                 }
@@ -47,7 +47,7 @@ namespace ElectronicStore.Areas.Administrator.Controllers.CustomAttributes
             }
             else if (Order != -1 && !Check(Order, int.Parse(account["MaCV"] ?? "0")))
             {
-                filterContext.Controller.TempData["Message"] = "Bạn không có quyền hạn truy cập.";
+                filterContext.Controller.TempData["Message"] = "Bạn bị giới hạn quyền truy cập!";
                 filterContext.Result = new RedirectResult("/Administrator/Account/SignIn");
             }
         }

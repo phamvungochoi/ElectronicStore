@@ -76,11 +76,12 @@ namespace ElectronicStore.Controllers
         }
         public ActionResult CapnhatGiohang(int iMaSanPham, FormCollection f)
         {
+            int sl = int.Parse(f["txtSoLuong"].ToString());
             List<GioHang> lstGioHang = LayGioHang();
             GioHang sanpham = lstGioHang.SingleOrDefault(n => n.iMaSP == iMaSanPham);
             if (sanpham != null)
             {
-                sanpham.iSoLuong = int.Parse(f["txtSoLuong"].ToString());
+                sanpham.iSoLuong = sl;
             }
             return RedirectToAction("GioHang");
         }
@@ -124,6 +125,9 @@ namespace ElectronicStore.Controllers
         [HttpPost]
         public ActionResult DatHang (FormCollection collection)
         {
+            string ten="";
+            int gia = 0;
+            int sl = 0;
             DONDATHANG ddh = new DONDATHANG();
             KHACHHANG kh = (KHACHHANG)Session["Taikhoan"];
             List<GioHang> gh = LayGioHang();
@@ -138,10 +142,60 @@ namespace ElectronicStore.Controllers
             foreach(var item in gh)
             {
                 CTHD cthd = new CTHD();
-                cthd.MaDH = ddh.MADH;
-                cthd.MaSP = item.iMaSP;
+                cthd.MaDH = item.iMaSP;
+                cthd.MaSP = ddh.MADH;
                 cthd.SoLuong = item.iSoLuong;
                 cthd.DonGia = (decimal)item.dDonGia;
+                ten += item.sTenSP + "  ";
+                data.CTHDs.InsertOnSubmit(cthd);
+            }
+            data.SubmitChanges();
+            foreach (CTHD ct in data.CTHDs.Where(n => n.MaSP == ddh.MADH).ToList())
+            {
+                gia += (int)(ct.DonGia * ct.SoLuong);
+                sl += (int)ct.SoLuong;
+            }
+            string url = "https://www.baokim.vn/payment/product/version11?business=phamvungochoi@gmail.com&id=&order_description=ABC" + "&product_name=" + ten + "&product_price=" + gia + "&product_quantity=" + sl + "&total_amount=" + gia + "&url_cancel=&url_detail=" + "&url_success=" + Url.Action("XacNhanDonHang", "GioHang");
+                data.SubmitChanges();
+                Session["GioHang"] = null;
+                return Redirect(url);           
+        }
+        public ActionResult DatHangKhiNhan()
+        {
+            if (Session["Taikhoan"] == null || Session["Taikhoan"].ToString() == "")
+            {
+                return RedirectToAction("Dangnhap", "User");
+            }
+            if (Session["GioHang"] == null)
+            {
+                return RedirectToAction("Index", "ElectronicStore");
+            }
+            List<GioHang> lstGioHang = LayGioHang();
+            ViewBag.TongSoLuong = TongSoLuong();
+            ViewBag.TongTien = TongTien();
+            return View(lstGioHang);
+        }
+        [HttpPost]
+        public ActionResult DatHangKhiNhan(FormCollection collection)
+        {
+            DONDATHANG ddh = new DONDATHANG();
+            KHACHHANG kh = (KHACHHANG)Session["Taikhoan"];
+            List<GioHang> gh = LayGioHang();
+            ddh.MAKH = kh.MaKH;
+            ddh.NgayDat = DateTime.Now;
+            DateTime ngaygiao = DateTime.Parse(collection["Ngaygiao"].ToString());
+            ddh.NgayGiao = ngaygiao;
+            ddh.TinhTrangGiaoHang = false;
+            ddh.DaThanhToan = false;
+            data.DONDATHANGs.InsertOnSubmit(ddh);
+            data.SubmitChanges();
+            foreach (var item in gh)
+            {
+                CTHD cthd = new CTHD();
+                cthd.MaDH = item.iMaSP;
+                cthd.MaSP = ddh.MADH;
+                cthd.SoLuong = item.iSoLuong;
+                cthd.DonGia = (decimal)item.dDonGia;              
                 data.CTHDs.InsertOnSubmit(cthd);
             }
             data.SubmitChanges();

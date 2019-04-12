@@ -108,7 +108,7 @@ namespace ElectronicStore.Controllers
                 else
                     ViewBag.Thongbao = " Tên đăng nhập hoặc mật khẩu không đúng! ";
             }
-            return RedirectToAction("Index","ElectronicStore");
+            return RedirectToAction("GioHang","GioHang");
 
         }
         public PartialViewResult ID()

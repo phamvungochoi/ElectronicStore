@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ElectronicStore.Models;
+using PagedList;
 namespace ElectronicStore.Controllers
 {
     public class ElectronicStoreController : Controller
@@ -37,6 +39,16 @@ namespace ElectronicStore.Controllers
         public ActionResult About()
         {
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Search(FormCollection f, int? page)
+        {
+            string chuoi = f["timkiem"].ToString();           
+            int pageSize = 24;
+            int pageNum = (page ?? 1);
+            var lst = from s in data.SPs where s.TenSP.Contains(chuoi.Trim()) select s;
+            return View(lst.ToPagedList(pageNum, pageSize));
         }
     }
 }
