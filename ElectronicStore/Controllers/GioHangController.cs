@@ -77,6 +77,10 @@ namespace ElectronicStore.Controllers
         public ActionResult CapnhatGiohang(int iMaSanPham, FormCollection f)
         {
             int sl = int.Parse(f["txtSoLuong"].ToString());
+            if(sl == 0)
+            {
+                return RedirectToAction("GioHang");
+            }
             List<GioHang> lstGioHang = LayGioHang();
             GioHang sanpham = lstGioHang.SingleOrDefault(n => n.iMaSP == iMaSanPham);
             if (sanpham != null)

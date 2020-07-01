@@ -70,8 +70,7 @@ namespace ElectronicStore.Controllers
                 kh.NgaySinh = DateTime.Parse(ngaysinh);
                 db.KHACHHANGs.InsertOnSubmit(kh);
                 db.SubmitChanges();
-                return RedirectToAction("Dangnhap");
-
+                ViewBag.Thongbao = "Đăng kí tài khoản thành công";
             }
             return Dangky();
         }
