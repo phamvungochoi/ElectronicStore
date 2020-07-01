@@ -120,5 +120,11 @@ namespace ElectronicStore.Controllers
             }
             return PartialView();
         }
+
+        public ActionResult DangXuat()
+        {
+            Session["Taikhoan"] = null;
+            return RedirectToAction("Index", "ElectronicStore");
+        }
     }
 }

@@ -44,10 +44,15 @@
                     <li><a href="@Url.Action("About","ElectronicStore")"><i class="fa fa-map-marker"></i> 243 Tôn Đản, phường 15, Quận 4</a></li>
                 </ul>
                 <ul class="header-links pull-right">
-
                     <li><a href="#"><i class="fa fa-dollar"></i> VNĐ</a></li>
                     <li><a href="@Url.Action("Dangnhap","User")"><i class="fa fa-user-o"> </i> My Account</a></li>
                     <li><a>@Html.Action("ID", "User")</a></li>
+                    @{
+                        if (Session["TaiKhoan"] != null)
+                        {
+                            <li><a href="@Url.Action("DangXuat","User")"><i class="fa fa-user-o"> </i> Đăng xuất</a></li>
+                        }
+                    }
                 </ul>
             </div>
         </div>
