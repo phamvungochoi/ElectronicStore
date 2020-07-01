@@ -103,13 +103,12 @@ namespace ElectronicStore.Controllers
                 {
                     ViewBag.Thongbao = "Đăng nhập thành công!";
                     Session["Taikhoan"] = kh;
-
+                    return RedirectToAction("Index", "ElectronicStore");
                 }
                 else
                     ViewBag.Thongbao = " Tên đăng nhập hoặc mật khẩu không đúng! ";
             }
-            return RedirectToAction("GioHang","GioHang");
-
+            return Dangnhap();
         }
         public PartialViewResult ID()
         {
