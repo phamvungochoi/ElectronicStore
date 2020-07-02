@@ -20,9 +20,9 @@ namespace ElectronicStore.Models
 	using System.Linq.Expressions;
 	using System.ComponentModel;
 	using System;
-	
-	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="Electronic")]
+    using System.ComponentModel.DataAnnotations;
+
+    [global::System.Data.Linq.Mapping.DatabaseAttribute(Name="Electronic")]
 	public partial class dbElectronicDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -33,6 +33,9 @@ namespace ElectronicStore.Models
     partial void InsertAD(AD instance);
     partial void UpdateAD(AD instance);
     partial void DeleteAD(AD instance);
+    partial void InsertTHUONGHIEU(THUONGHIEU instance);
+    partial void UpdateTHUONGHIEU(THUONGHIEU instance);
+    partial void DeleteTHUONGHIEU(THUONGHIEU instance);
     partial void InsertCTHD(CTHD instance);
     partial void UpdateCTHD(CTHD instance);
     partial void DeleteCTHD(CTHD instance);
@@ -48,13 +51,10 @@ namespace ElectronicStore.Models
     partial void InsertSP(SP instance);
     partial void UpdateSP(SP instance);
     partial void DeleteSP(SP instance);
-    partial void InsertTHUONGHIEU(THUONGHIEU instance);
-    partial void UpdateTHUONGHIEU(THUONGHIEU instance);
-    partial void DeleteTHUONGHIEU(THUONGHIEU instance);
     #endregion
 		
 		public dbElectronicDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["ElectronicConnectionString"].ConnectionString, mappingSource)
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["ElectronicConnectionString1"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -88,6 +88,14 @@ namespace ElectronicStore.Models
 			get
 			{
 				return this.GetTable<AD>();
+			}
+		}
+		
+		public System.Data.Linq.Table<THUONGHIEU> THUONGHIEUs
+		{
+			get
+			{
+				return this.GetTable<THUONGHIEU>();
 			}
 		}
 		
@@ -128,14 +136,6 @@ namespace ElectronicStore.Models
 			get
 			{
 				return this.GetTable<SP>();
-			}
-		}
-		
-		public System.Data.Linq.Table<THUONGHIEU> THUONGHIEUs
-		{
-			get
-			{
-				return this.GetTable<THUONGHIEU>();
 			}
 		}
 	}
@@ -201,6 +201,133 @@ namespace ElectronicStore.Models
 					this._passadmin = value;
 					this.SendPropertyChanged("passadmin");
 					this.OnpassadminChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.THUONGHIEU")]
+	public partial class THUONGHIEU : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _MATH;
+		
+		private string _TENTH;
+		
+		private EntityRef<SP> _SP;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnMATHChanging(int value);
+    partial void OnMATHChanged();
+    partial void OnTENTHChanging(string value);
+    partial void OnTENTHChanged();
+    #endregion
+		
+		public THUONGHIEU()
+		{
+			this._SP = default(EntityRef<SP>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MATH", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int MATH
+		{
+			get
+			{
+				return this._MATH;
+			}
+			set
+			{
+				if ((this._MATH != value))
+				{
+					if (this._SP.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnMATHChanging(value);
+					this.SendPropertyChanging();
+					this._MATH = value;
+					this.SendPropertyChanged("MATH");
+					this.OnMATHChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TENTH", DbType="NVarChar(50)")]
+		public string TENTH
+		{
+			get
+			{
+				return this._TENTH;
+			}
+			set
+			{
+				if ((this._TENTH != value))
+				{
+					this.OnTENTHChanging(value);
+					this.SendPropertyChanging();
+					this._TENTH = value;
+					this.SendPropertyChanged("TENTH");
+					this.OnTENTHChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SP_THUONGHIEU", Storage="_SP", ThisKey="MATH", OtherKey="MaSP", IsForeignKey=true)]
+		public SP SP
+		{
+			get
+			{
+				return this._SP.Entity;
+			}
+			set
+			{
+				SP previousValue = this._SP.Entity;
+				if (((previousValue != value) 
+							|| (this._SP.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._SP.Entity = null;
+						previousValue.THUONGHIEU = null;
+					}
+					this._SP.Entity = value;
+					if ((value != null))
+					{
+						value.THUONGHIEU = this;
+						this._MATH = value.MaSP;
+					}
+					else
+					{
+						this._MATH = default(int);
+					}
+					this.SendPropertyChanged("SP");
 				}
 			}
 		}
@@ -1247,9 +1374,9 @@ namespace ElectronicStore.Models
 		
 		private System.Nullable<int> _MATH;
 		
-		private EntitySet<CTHD> _CTHDs;
-		
 		private EntityRef<THUONGHIEU> _THUONGHIEU;
+		
+		private EntitySet<CTHD> _CTHDs;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1275,8 +1402,8 @@ namespace ElectronicStore.Models
 		
 		public SP()
 		{
-			this._CTHDs = new EntitySet<CTHD>(new Action<CTHD>(this.attach_CTHDs), new Action<CTHD>(this.detach_CTHDs));
 			this._THUONGHIEU = default(EntityRef<THUONGHIEU>);
+			this._CTHDs = new EntitySet<CTHD>(new Action<CTHD>(this.attach_CTHDs), new Action<CTHD>(this.detach_CTHDs));
 			OnCreated();
 		}
 		
@@ -1301,6 +1428,7 @@ namespace ElectronicStore.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TenSP", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		[Required]
 		public string TenSP
 		{
 			get
@@ -1321,6 +1449,7 @@ namespace ElectronicStore.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GiaBan", DbType="Decimal(18,0)")]
+		[Required]
 		public System.Nullable<decimal> GiaBan
 		{
 			get
@@ -1341,6 +1470,7 @@ namespace ElectronicStore.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MoTa", DbType="NVarChar(MAX)")]
+		[Required]
 		public string MoTa
 		{
 			get
@@ -1361,6 +1491,7 @@ namespace ElectronicStore.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NgayCapNhat", DbType="DateTime")]
+		[Required]
 		public System.Nullable<System.DateTime> NgayCapNhat
 		{
 			get
@@ -1381,6 +1512,7 @@ namespace ElectronicStore.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HinhSP", DbType="VarChar(50)")]
+		[Required]
 		public string HinhSP
 		{
 			get
@@ -1401,6 +1533,7 @@ namespace ElectronicStore.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SLTon", DbType="Int")]
+		
 		public System.Nullable<int> SLTon
 		{
 			get
@@ -1440,20 +1573,8 @@ namespace ElectronicStore.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SP_CTHD", Storage="_CTHDs", ThisKey="MaSP", OtherKey="MaDH")]
-		public EntitySet<CTHD> CTHDs
-		{
-			get
-			{
-				return this._CTHDs;
-			}
-			set
-			{
-				this._CTHDs.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SP_THUONGHIEU", Storage="_THUONGHIEU", ThisKey="MaSP", OtherKey="MATH", IsUnique=true, IsForeignKey=false)]
+		[Required]
 		public THUONGHIEU THUONGHIEU
 		{
 			get
@@ -1479,6 +1600,19 @@ namespace ElectronicStore.Models
 					}
 					this.SendPropertyChanged("THUONGHIEU");
 				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SP_CTHD", Storage="_CTHDs", ThisKey="MaSP", OtherKey="MaDH")]
+		public EntitySet<CTHD> CTHDs
+		{
+			get
+			{
+				return this._CTHDs;
+			}
+			set
+			{
+				this._CTHDs.Assign(value);
 			}
 		}
 		
@@ -1512,133 +1646,6 @@ namespace ElectronicStore.Models
 		{
 			this.SendPropertyChanging();
 			entity.SP = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.THUONGHIEU")]
-	public partial class THUONGHIEU : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _MATH;
-		
-		private string _TENTH;
-		
-		private EntityRef<SP> _SP;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnMATHChanging(int value);
-    partial void OnMATHChanged();
-    partial void OnTENTHChanging(string value);
-    partial void OnTENTHChanged();
-    #endregion
-		
-		public THUONGHIEU()
-		{
-			this._SP = default(EntityRef<SP>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MATH", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int MATH
-		{
-			get
-			{
-				return this._MATH;
-			}
-			set
-			{
-				if ((this._MATH != value))
-				{
-					if (this._SP.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnMATHChanging(value);
-					this.SendPropertyChanging();
-					this._MATH = value;
-					this.SendPropertyChanged("MATH");
-					this.OnMATHChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TENTH", DbType="NVarChar(50)")]
-		public string TENTH
-		{
-			get
-			{
-				return this._TENTH;
-			}
-			set
-			{
-				if ((this._TENTH != value))
-				{
-					this.OnTENTHChanging(value);
-					this.SendPropertyChanging();
-					this._TENTH = value;
-					this.SendPropertyChanged("TENTH");
-					this.OnTENTHChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SP_THUONGHIEU", Storage="_SP", ThisKey="MATH", OtherKey="MaSP", IsForeignKey=true)]
-		public SP SP
-		{
-			get
-			{
-				return this._SP.Entity;
-			}
-			set
-			{
-				SP previousValue = this._SP.Entity;
-				if (((previousValue != value) 
-							|| (this._SP.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._SP.Entity = null;
-						previousValue.THUONGHIEU = null;
-					}
-					this._SP.Entity = value;
-					if ((value != null))
-					{
-						value.THUONGHIEU = this;
-						this._MATH = value.MaSP;
-					}
-					else
-					{
-						this._MATH = default(int);
-					}
-					this.SendPropertyChanged("SP");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 }

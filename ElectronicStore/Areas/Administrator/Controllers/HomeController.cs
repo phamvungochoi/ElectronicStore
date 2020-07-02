@@ -25,7 +25,7 @@ namespace ElectronicStore.Areas.Administrator.Controllers
         {
             int pageNumber = (page ?? 1);
             int pageSize = 7;
-            return View(db.SPs.ToList().OrderBy(n => n.MaSP).ToPagedList(pageNumber, pageSize));
+            return View(db.SPs.ToList().OrderByDescending(n => n.MaSP).ToPagedList(pageNumber, pageSize));
         }
 
         [AdminAuthorize(Order = 2)]
@@ -35,7 +35,7 @@ namespace ElectronicStore.Areas.Administrator.Controllers
             return View();
         }
         [HttpPost]
-        [ValidateInput(false)]
+        //[ValidateInput(false)]
         public ActionResult ThemMoiSP(SP sanpham, HttpPostedFileBase fileUpLoad)
         {
             ViewBag.MATH = new SelectList(db.THUONGHIEUs.ToList().OrderBy(n => n.TENTH), "MATH", "TENTH");
@@ -62,6 +62,10 @@ namespace ElectronicStore.Areas.Administrator.Controllers
                     sanpham.HinhSP = fileName;
                     db.SPs.InsertOnSubmit(sanpham);
                     db.SubmitChanges();
+                }
+                else
+                {
+                    ViewBag.Info = "Thông tin chưa hợp lệ";
                 }
             }
             return RedirectToAction("SanPham", "Home");

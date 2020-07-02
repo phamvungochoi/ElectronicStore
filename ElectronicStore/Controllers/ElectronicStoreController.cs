@@ -13,7 +13,7 @@ namespace ElectronicStore.Controllers
         dbElectronicDataContext data = new dbElectronicDataContext();
         private List<SP> LaySP(int count)
         {
-            return data.SPs.OrderByDescending(a => a.NgayCapNhat).Take(count).ToList();
+            return data.SPs.OrderByDescending(a => a.MaSP).Take(count).ToList();
         }
         // GET: ElectronicStore
         public ActionResult Index()

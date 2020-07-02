@@ -1,9 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Electronic" Class="dbElectronicDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=LAPTOP-ICSI5IEF\SQLEXPRESS;Initial Catalog=Electronic;User ID=simon" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="ElectronicConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="WebSettings" ConnectionString="Data Source=.;Initial Catalog=Electronic;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="ElectronicConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.AD" Member="ADs">
     <Type Name="AD">
       <Column Name="idadmin" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="passadmin" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.THUONGHIEU" Member="THUONGHIEUs">
+    <Type Name="THUONGHIEU">
+      <Column Name="MATH" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TENTH" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="SP_THUONGHIEU" Member="SP" ThisKey="MATH" OtherKey="MaSP" Type="SP" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.CTHD" Member="CTHDs">
@@ -65,15 +72,8 @@
       <Column Name="HinhSP" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="SLTon" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="MATH" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="SP_CTHD" Member="CTHDs" ThisKey="MaSP" OtherKey="MaDH" Type="CTHD" />
       <Association Name="SP_THUONGHIEU" Member="THUONGHIEU" ThisKey="MaSP" OtherKey="MATH" Type="THUONGHIEU" Cardinality="One" />
-    </Type>
-  </Table>
-  <Table Name="dbo.THUONGHIEU" Member="THUONGHIEUs">
-    <Type Name="THUONGHIEU">
-      <Column Name="MATH" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="TENTH" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Association Name="SP_THUONGHIEU" Member="SP" ThisKey="MATH" OtherKey="MaSP" Type="SP" IsForeignKey="true" />
+      <Association Name="SP_CTHD" Member="CTHDs" ThisKey="MaSP" OtherKey="MaDH" Type="CTHD" />
     </Type>
   </Table>
 </Database>
